@@ -245,6 +245,7 @@
   <tile id="30" type="brazier">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="name" value="brazier"/>
    </properties>
    <objectgroup draworder="index">
     <object id="1" x="5.5" y="31.625">
@@ -255,6 +256,7 @@
   <tile id="31" type="brazier">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="name" value="brazier"/>
    </properties>
    <objectgroup draworder="index">
     <object id="1" x="0.25" y="7.875">
@@ -330,6 +332,7 @@
   <tile id="40" type="brazier">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="name" value="brazier"/>
    </properties>
    <objectgroup draworder="index">
     <object id="1" x="2.75" y="2.875">
@@ -346,6 +349,7 @@
   <tile id="41" type="brazier">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="name" value="brazier"/>
    </properties>
    <objectgroup draworder="index">
     <object id="1" x="29.625" y="6.75" rotation="180">

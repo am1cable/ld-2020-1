@@ -26,7 +26,8 @@ export default class Player {
         this.sprite
             .setExistingBody(compoundBody)
             .setFixedRotation()
-            .setPosition(x, y);
+            .setPosition(x, y)
+            .setDepth(this.sprite.y + this.sprite.height - 2);
 
         const { A, D, W, S } = Phaser.Input.Keyboard.KeyCodes;
         this.leftInput = this.parent.input.keyboard.addKey(A);
@@ -94,6 +95,6 @@ export default class Player {
             this.isWalking = false;
             this.isRunning = false;
         }
-
+        this.sprite.setDepth(this.sprite.y + this.sprite.height - 2);
     }
 };

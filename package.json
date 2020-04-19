@@ -22,6 +22,7 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
+    "easystarjs": "^0.4.3",
     "matter-js": "^0.14.2",
     "phaser": "3.21.0",
     "phaser-matter-collision-plugin": "^0.10.2"

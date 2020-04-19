@@ -1335,6 +1335,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":true
+                        }, 
+                        {
+                         "name":"name",
+                         "type":"string",
+                         "value":"brazier"
                         }],
                  "type":"brazier"
                 }, 
@@ -1392,6 +1397,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":true
+                        }, 
+                        {
+                         "name":"name",
+                         "type":"string",
+                         "value":"brazier"
                         }],
                  "type":"brazier"
                 }, 
@@ -1831,6 +1841,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":true
+                        }, 
+                        {
+                         "name":"name",
+                         "type":"string",
+                         "value":"brazier"
                         }],
                  "type":"brazier"
                 }, 
@@ -1952,6 +1967,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":true
+                        }, 
+                        {
+                         "name":"name",
+                         "type":"string",
+                         "value":"brazier"
                         }],
                  "type":"brazier"
                 }, 

@@ -4,6 +4,7 @@ import Player from '../components/player/player';
 import Light from '../components/light/light';
 import Barrel from '../components/barrel/barrel';
 import Box from '../components/box/box';
+import End from '../components/end/end';
 
 export default class MapScene1 extends Phaser.Scene {
     constructor() {
@@ -28,29 +29,42 @@ export default class MapScene1 extends Phaser.Scene {
         }, []);
         this.boxes = [];
         this.barrels = [];
+        this.brazier = []
         objects.forEach(obj => {
             if (obj.properties.name === "barrel") this.barrels.push(new Barrel({parent: this, rect: obj}))
             if (obj.properties.name === "box") this.boxes.push(new Box({parent: this, rect: obj}));
+            if(obj.properties.name === "brazier") this.brazier.push(obj);
         });
     }
 
     startScene = () => {
-        const spawnPoint = this.map.findObject('points', obj => obj.type === "start");
-        const lights = this.map.filterObjects('points', obj => obj.type = "relight");
-        this.player = new Player({ parent: this, x: spawnPoint.x, y: spawnPoint.y });
-        this.drawCamera(spawnPoint);
-        this.drawLights(lights);
+        this.drawPlayer();
+        this.drawCamera();
+        this.drawEnd();
+        this.drawLights();
         this.debuggingTools = new Debugger(this);
     }
-    
-    drawLights = (lights) => {
+
+    drawPlayer = () => {
+        const spawnPoint = this.map.findObject('points', obj => obj.type === "start");
+        this.player = new Player({ parent: this, x: spawnPoint.x, y: spawnPoint.y });
+    }
+
+    drawEnd = () => {
+        const endGame1 = this.map.findObject('points', obj => obj.type === "triggerEnd");
+        const endGame2 = this.map.findObject('points', obj => obj.type === "end");
+        this.end = new End({parent: this, triggerPoint: endGame1, endPoint: endGame2, sprites: this.brazier});
+    }
+
+    drawLights = () => {
+        const lights = [...this.map.filterObjects('points', obj => obj.type === "relight")];
         this.lightStations = [];
         lights.forEach(e => {
             this.lightStations.push(new Light({ parent: this, rect: e }));
         });
     }
 
-    drawCamera = (spawnPoint) => {
+    drawCamera = () => {
         this.camera = this.cameras.main;
         this.camera.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.camera.startFollow(this.player.sprite);
