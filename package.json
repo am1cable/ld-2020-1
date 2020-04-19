@@ -22,7 +22,9 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
-    "phaser": "^3.22.0"
+    "matter-js": "^0.14.2",
+    "phaser": "3.21.0",
+    "phaser-matter-collision-plugin": "^0.10.2"
   },
   "directories": {
     "doc": "docs"

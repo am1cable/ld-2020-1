@@ -1,1 +1,1 @@
-export const gameRatio = { width: 9 * 32, height: 15 * 32 };
+export const gameRatio = { width: 9 * 32, height: 15 * 32, zoom: 6 };
