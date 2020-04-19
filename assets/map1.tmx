@@ -23,6 +23,7 @@
   <tile id="5">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="isUnpassable" type="bool" value="true"/>
    </properties>
    <objectgroup draworder="index">
     <object id="2" x="0" y="0" width="31.875" height="10.875"/>
@@ -32,6 +33,7 @@
   <tile id="6">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="isUnpassable" type="bool" value="true"/>
    </properties>
    <objectgroup draworder="index">
     <object id="6" x="0" y="0" width="31.875" height="10.875"/>
@@ -71,6 +73,7 @@
   <tile id="10">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="isUnpassable" type="bool" value="true"/>
    </properties>
    <objectgroup draworder="index">
     <object id="1" x="17.125" y="20.375">
@@ -81,6 +84,7 @@
   <tile id="11">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="isUnpassable" type="bool" value="true"/>
    </properties>
    <objectgroup draworder="index">
     <object id="1" x="15.25" y="10.125">
@@ -91,6 +95,7 @@
   <tile id="12">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="isUnpassable" type="bool" value="true"/>
    </properties>
    <objectgroup draworder="index">
     <object id="1" x="9.875" y="18">
@@ -101,6 +106,7 @@
   <tile id="13" type="monster">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="isUnpassable" type="bool" value="true"/>
    </properties>
    <objectgroup draworder="index">
     <object id="1" x="21.75" y="17.25">
@@ -121,6 +127,7 @@
   <tile id="15">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="isUnpassable" type="bool" value="true"/>
    </properties>
    <objectgroup draworder="index">
     <object id="1" x="67.3333" y="-202" height="0.666667"/>
@@ -131,6 +138,7 @@
   <tile id="16">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="isUnpassable" type="bool" value="true"/>
    </properties>
    <objectgroup draworder="index">
     <object id="4" x="0.125" y="21" width="31.875" height="10.875"/>
@@ -150,6 +158,7 @@
   <tile id="18">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="isUnpassable" type="bool" value="true"/>
    </properties>
    <objectgroup draworder="index">
     <object id="1" x="0" y="0" width="10.75" height="31.875"/>
@@ -159,6 +168,7 @@
   <tile id="19">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="isUnpassable" type="bool" value="true"/>
    </properties>
    <objectgroup draworder="index">
     <object id="6" x="21.25" y="0" width="10.75" height="31.875"/>
@@ -168,6 +178,7 @@
   <tile id="20" type="barrel">
    <properties>
     <property name="isOccupied" type="bool" value="true"/>
+    <property name="isUnpassable" type="bool" value="true"/>
     <property name="name" value="barrel"/>
    </properties>
   </tile>
@@ -175,6 +186,7 @@
    <properties>
     <property name="collides" type="bool" value="true"/>
     <property name="isOccupied" type="bool" value="false"/>
+    <property name="isUnpassable" type="bool" value="true"/>
     <property name="name" value="barrel"/>
    </properties>
    <objectgroup draworder="index">
@@ -186,6 +198,7 @@
   <tile id="22" type="box">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="isUnpassable" type="bool" value="true"/>
     <property name="name" value="box"/>
    </properties>
    <objectgroup draworder="index">
@@ -227,6 +240,7 @@
   <tile id="28">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="isUnpassable" type="bool" value="true"/>
    </properties>
    <objectgroup draworder="index">
     <object id="1" x="0" y="0" width="32" height="14.875"/>
@@ -236,6 +250,7 @@
   <tile id="29">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="isUnpassable" type="bool" value="true"/>
    </properties>
    <objectgroup draworder="index">
     <object id="4" x="0" y="0" width="32" height="14.875"/>
@@ -245,6 +260,7 @@
   <tile id="30" type="brazier">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="isUnpassable" type="bool" value="true"/>
     <property name="name" value="brazier"/>
    </properties>
    <objectgroup draworder="index">
@@ -256,6 +272,7 @@
   <tile id="31" type="brazier">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="isUnpassable" type="bool" value="true"/>
     <property name="name" value="brazier"/>
    </properties>
    <objectgroup draworder="index">
@@ -297,6 +314,7 @@
   <tile id="36" terrain="1,1,1,1">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="isUnpassable" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="37" terrain="1,0,1,0">
@@ -332,6 +350,7 @@
   <tile id="40" type="brazier">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="isUnpassable" type="bool" value="true"/>
     <property name="name" value="brazier"/>
    </properties>
    <objectgroup draworder="index">
@@ -349,6 +368,7 @@
   <tile id="41" type="brazier">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="isUnpassable" type="bool" value="true"/>
     <property name="name" value="brazier"/>
    </properties>
    <objectgroup draworder="index">

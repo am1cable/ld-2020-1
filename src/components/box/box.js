@@ -6,8 +6,11 @@ export default class Box {
             .setRectangle(rect.width / 1.5, rect.height / 1.5, { isStatic: false, friction: 1, staticFriction: 1, frictionAir: 1, density: 100 })
             .setFixedRotation();
             this.box.setDepth(this.box.y + this.box.height - 2);
+            this.parent.events.on("update", this.update, this);
+
     };
 
     update = (time, delta) => {
+        this.box.setDepth(this.box.y + this.box.height - 2);
     }
 };

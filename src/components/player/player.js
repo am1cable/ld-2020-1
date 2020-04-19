@@ -38,14 +38,26 @@ export default class Player {
         this.upInput.on("down", e => this.lastClicks.push({ type: "up", time: e.originalEvent.timeStamp }));
         this.downInput = this.parent.input.keyboard.addKey(S);
         this.downInput.on("down", e => this.lastClicks.push({ type: "down", time: e.originalEvent.timeStamp }));
-
-        this.destroyed = false;
         this.parent.events.on("update", this.update, this);
         this.isRunning = false;
         this.isWalking = false;
+
+        this.controllable = true;
     };
 
     runVelocity = () => this.lastClicks.length > 1 && (this.lastClicks[1].time - this.lastClicks[0].time < 350) || this.isRunning ? 1.5 : 0.5;
+
+    moveTo = (path) => {
+        const movePath = path.forEach(e => ({ x: e.x * 32, y: e.y * 32 }))
+        console.log(movePath);
+    }
+
+    stop = () =>{
+        this.controllable = false;
+        this.sprite.setVelocity(0, 0);
+    }
+
+    start = () => this.controllable = true;
 
     update = (time, delta) => {
         const sprite = this.sprite;
@@ -55,7 +67,7 @@ export default class Player {
         const isDownKeyDown = this.downInput.isDown;
         if (this.lastClicks.length > 2) this.lastClicks.shift();
         sprite.setVelocity(0, 0);
-        if (isRightKeyDown || isLeftKeyDown || isUpKeyDown || isDownKeyDown) {
+        if (this.controllable && (isRightKeyDown || isLeftKeyDown || isUpKeyDown || isDownKeyDown)) {
             var velocity = this.runVelocity();
             this.triggers.left.sleeping = true;
             this.triggers.right.sleeping = true;
