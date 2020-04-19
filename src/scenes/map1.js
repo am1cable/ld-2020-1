@@ -11,9 +11,11 @@ export default class MapScene1 extends Phaser.Scene {
         super('map1')
     }
 
-    init = (data) => {
+    init = ({restarting = false}) => {
+        this.restarting = restarting;
     }
-    preload = () => { }
+    preload = () => {
+    }
 
     create = () => {
         this.map = this.make.tilemap({ key: "map" });
@@ -31,10 +33,11 @@ export default class MapScene1 extends Phaser.Scene {
         this.barrels = [];
         this.brazier = []
         objects.forEach(obj => {
-            if (obj.properties.name === "barrel") this.barrels.push(new Barrel({parent: this, rect: obj}))
-            if (obj.properties.name === "box") this.boxes.push(new Box({parent: this, rect: obj}));
-            if(obj.properties.name === "brazier") this.brazier.push(obj);
+            if (obj.properties.name === "barrel") this.barrels.push(new Barrel({ parent: this, rect: obj }))
+            if (obj.properties.name === "box") this.boxes.push(new Box({ parent: this, rect: obj }));
+            if (obj.properties.name === "brazier") this.brazier.push(obj);
         });
+        if (this.restarting) this.startScene();
     }
 
     startScene = () => {
@@ -53,7 +56,7 @@ export default class MapScene1 extends Phaser.Scene {
     drawEnd = () => {
         const endGame1 = this.map.findObject('points', obj => obj.type === "triggerEnd");
         const endGame2 = this.map.findObject('points', obj => obj.type === "end");
-        this.end = new End({parent: this, triggerPoint: endGame1, endPoint: endGame2, sprites: this.brazier});
+        this.end = new End({ parent: this, triggerPoint: endGame1, endPoint: endGame2, sprites: this.brazier });
     }
 
     drawLights = () => {
@@ -69,6 +72,12 @@ export default class MapScene1 extends Phaser.Scene {
         this.camera.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.camera.startFollow(this.player.sprite);
         this.camera.fadeEffect.start(false, 400, 0, 0, 0);
+    }
+
+
+    fadeSceneRestart = (parent) => {
+        this.camera.fadeEffect.start(true, 400, 0, 0, 0);
+        this.time.delayedCall(1 * 1000, () => this.scene.restart({restarting: true}), [], this);
     }
 
     update = (time, delta) => {

@@ -38,26 +38,65 @@ export default class Player {
         this.upInput.on("down", e => this.lastClicks.push({ type: "up", time: e.originalEvent.timeStamp }));
         this.downInput = this.parent.input.keyboard.addKey(S);
         this.downInput.on("down", e => this.lastClicks.push({ type: "down", time: e.originalEvent.timeStamp }));
-        this.parent.events.on("update", this.update, this);
         this.isRunning = false;
         this.isWalking = false;
 
-        this.controllable = true;
+        this.isControllable = true;
+        this.parent.events.on("update", this.update, this);
+        this.parent.events.once("shutdown", this.destroy, this);
+        this.parent.events.once("destroy", this.destroy, this);
     };
+
+    destroy = () => {
+        this.parent.events.off("update", this.update, this);
+        this.parent.events.off("shutdown", this.destroy, this);
+        this.parent.events.off("destroy", this.destroy, this);
+    }
 
     runVelocity = () => this.lastClicks.length > 1 && (this.lastClicks[1].time - this.lastClicks[0].time < 350) || this.isRunning ? 1.5 : 0.5;
 
     moveTo = (path) => {
-        const movePath = path.forEach(e => ({ x: e.x * 32, y: e.y * 32 }))
-        console.log(movePath);
+        const tweens = [];
+        path.forEach(p => {
+            tweens.push({
+                targets: this.sprite,
+                x: { value: p.x, duration: 400 },
+                y: { value: p.y, duration: 400 },
+                onStart: this.updateSpritePose,
+                onStartScope: this
+            });
+        })
+        this.parent.tweens.timeline({
+            tweens: tweens,
+            onComplete: this.handleMoveComplete,
+            onCompleteScope: this
+        });
     }
 
-    stop = () =>{
-        this.controllable = false;
+    updateSpritePose = (a) => {
+        const target = { x: a.data[0].getEndValue(), y: a.data[1].getEndValue() };
+        const diffX = Math.abs(target.x - this.sprite.x);
+        const diffY = Math.abs(target.y - this.sprite.y);
+        if (diffX > diffY) {
+            if (target.x > this.sprite.x) this.sprite.setTexture("sprites1", "sprites-3.png");
+            else if (target.x < this.sprite.x) this.sprite.setTexture("sprites1", "sprites-2.png");
+        } else {
+            if (target.y > this.sprite.y) this.sprite.setTexture("sprites1", "sprites-0.png");
+            else if (target.y < this.sprite.y) this.sprite.setTexture("sprites1", "sprites-1.png");
+        }
+    }
+
+    handleMoveComplete = () => {
+        this.sprite.setTexture("sprites1", "sprites-1.png");
+        this.parent.fadeSceneRestart();
+    }
+
+    stop = () => {
+        this.isControllable = false;
         this.sprite.setVelocity(0, 0);
     }
 
-    start = () => this.controllable = true;
+    start = () => this.isControllable = true;
 
     update = (time, delta) => {
         const sprite = this.sprite;
@@ -67,7 +106,7 @@ export default class Player {
         const isDownKeyDown = this.downInput.isDown;
         if (this.lastClicks.length > 2) this.lastClicks.shift();
         sprite.setVelocity(0, 0);
-        if (this.controllable && (isRightKeyDown || isLeftKeyDown || isUpKeyDown || isDownKeyDown)) {
+        if (this.isControllable && (isRightKeyDown || isLeftKeyDown || isUpKeyDown || isDownKeyDown)) {
             var velocity = this.runVelocity();
             this.triggers.left.sleeping = true;
             this.triggers.right.sleeping = true;

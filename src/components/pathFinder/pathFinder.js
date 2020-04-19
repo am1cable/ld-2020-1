@@ -23,13 +23,11 @@ export default class PathFinder {
   }
 
   getPath = ({start, end, callback}) => {
-    this.path = undefined;
     this.setupMap();
     this.pathFinder.findPath(Math.floor(start.x/32), Math.floor(start.y/32), Math.floor(end.x/32), Math.floor(end.y/32), (path) => {
       if (path) {
-        this.path = path;
-        this.pathTime = Math.ceil(this.path.length * 0.3);
-        callback(path);
+        const finalPath = path.map(e => ({ x: e.x * 32, y: e.y * 32 }));
+        callback(finalPath);
       }
     }, [callback]);
     this.pathFinder.setIterationsPerCalculation(1000);

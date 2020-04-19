@@ -13,7 +13,7 @@ export default class End {
             sprite.setDepth(sprite.y + sprite.height - 2);
             this.parent.brazierSprites.push(sprite);
         })
-        this.endPoint = endPoint;
+        this.endPoint = {x: endPoint.x, y: endPoint.y};
 
         this.collision = this.parent.matterCollision.addOnCollideStart({
             objectA: this.triggerArea,

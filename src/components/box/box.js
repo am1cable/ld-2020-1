@@ -7,8 +7,16 @@ export default class Box {
             .setFixedRotation();
             this.box.setDepth(this.box.y + this.box.height - 2);
             this.parent.events.on("update", this.update, this);
+            this.parent.events.once("shutdown", this.destroy, this);
+            this.parent.events.once("destroy", this.destroy, this);
 
     };
+
+    destroy = () => {
+        this.parent.events.off("update", this.update, this);
+        this.parent.events.off("shutdown", this.destroy, this);
+        this.parent.events.off("destroy", this.destroy, this);
+    }
 
     update = (time, delta) => {
         this.box.setDepth(this.box.y + this.box.height - 2);

@@ -23,7 +23,7 @@ export default class Candle extends Phaser.Scene {
     }
 
     update = (time, delta) => {
-        if (this.candleRemaining > 0.1) {
+        if (this.candleRemaining > 0.1 && this.mapScene.player.isControllable) {
             if (this.mapScene.player.isRunning) {
                 this.candleRemaining -= 0.001;
 
