@@ -168,12 +168,14 @@
   <tile id="20" type="barrel">
    <properties>
     <property name="isOccupied" type="bool" value="true"/>
+    <property name="name" value="barrel"/>
    </properties>
   </tile>
   <tile id="21" type="barrel">
    <properties>
     <property name="collides" type="bool" value="true"/>
     <property name="isOccupied" type="bool" value="false"/>
+    <property name="name" value="barrel"/>
    </properties>
    <objectgroup draworder="index">
     <object id="1" x="6.25" y="31.875">
@@ -184,6 +186,7 @@
   <tile id="22" type="box">
    <properties>
     <property name="collides" type="bool" value="true"/>
+    <property name="name" value="box"/>
    </properties>
    <objectgroup draworder="index">
     <object id="1" x="3" y="1.625">

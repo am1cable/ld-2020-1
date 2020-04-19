@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 import Debugger from '../components/debugger/debugger';
 import Player from '../components/player/player';
 import Light from '../components/light/light';
+import Barrel from '../components/barrel/barrel';
+import Box from '../components/box/box';
 
 export default class MapScene1 extends Phaser.Scene {
     constructor() {
@@ -18,6 +20,18 @@ export default class MapScene1 extends Phaser.Scene {
         const bg = this.map.createStaticLayer("bg", tileset, 0, 0);
         bg.setCollisionByProperty({ collides: true });
         this.matter.world.convertTilemapLayer(bg);
+
+        let objects = this.map.getLayer("objects");
+        objects = [...objects.data].reduce((list, line) => {
+            const itemsInLine = line.filter(obj => obj.properties && obj.properties.name);
+            return [...list, ...itemsInLine];
+        }, []);
+        this.boxes = [];
+        this.barrels = [];
+        objects.forEach(obj => {
+            if (obj.properties.name === "barrel") this.barrels.push(new Barrel({parent: this, rect: obj}))
+            if (obj.properties.name === "box") this.boxes.push(new Box({parent: this, rect: obj}));
+        });
     }
 
     startScene = () => {
@@ -28,7 +42,7 @@ export default class MapScene1 extends Phaser.Scene {
         this.drawLights(lights);
         this.debuggingTools = new Debugger(this);
     }
-
+    
     drawLights = (lights) => {
         this.lightStations = [];
         lights.forEach(e => {
