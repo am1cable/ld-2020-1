@@ -29,18 +29,16 @@ export default class LoadingScene extends Phaser.Scene {
       percentText.setText(parseInt(value * 100) + '%');
     });
     
-    
     this.load.tilemapTiledJSON('map', 'assets/map1.json');
     this.load.image('sprites', 'assets/sprites.png');
     this.load.atlas('sprites1', 'assets/sprites1-0.png', 'assets/sprites1.json');
-
-    // this.load.tilemapTiledJSON('map1', 'assets/map1.json');
-    // this.load.atlas('assets', 'assets/assets.png', 'assets/assets.json');
-    // this.load.image('background2', 'assets/background2.png');
+    this.load.image('particle', 'assets/particle.png');
+    this.load.audio('wind_3', 'assets/wind_3.m4a');
+    this.load.atlas('flares', 'assets/flares.png', 'assets/flares.json');
   }
 
   create = () => {
-     this.scene.start('map1');
+     this.scene.start('map');
      this.scene.launch('candle');
   }
 }

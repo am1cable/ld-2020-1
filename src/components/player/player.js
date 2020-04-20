@@ -3,7 +3,6 @@ export default class Player {
         this.parent = parent;
         this.sprite = this.parent.matter.add.sprite(0, 0, "sprites1", "sprites-1.png");
         this.lastClicks = [];
-
         const { Body, Bodies } = Phaser.Physics.Matter.Matter;
         const { width: w, height: h } = this.sprite;
         const mainBody = Bodies.circle(0, 0, w / 3, h / 3);
@@ -38,16 +37,18 @@ export default class Player {
         this.upInput.on("down", e => this.lastClicks.push({ type: "up", time: e.originalEvent.timeStamp }));
         this.downInput = this.parent.input.keyboard.addKey(S);
         this.downInput.on("down", e => this.lastClicks.push({ type: "down", time: e.originalEvent.timeStamp }));
-        this.isRunning = false;
-        this.isWalking = false;
 
-        this.isControllable = true;
         this.parent.events.on("update", this.update, this);
         this.parent.events.once("shutdown", this.destroy, this);
         this.parent.events.once("destroy", this.destroy, this);
+        
+        this.isRunning = false;
+        this.isWalking = false;
+        this.isControllable = false;
     };
 
     destroy = () => {
+        this.isControllable = false;
         this.parent.events.off("update", this.update, this);
         this.parent.events.off("shutdown", this.destroy, this);
         this.parent.events.off("destroy", this.destroy, this);
@@ -55,16 +56,27 @@ export default class Player {
 
     runVelocity = () => this.lastClicks.length > 1 && (this.lastClicks[1].time - this.lastClicks[0].time < 350) || this.isRunning ? 1.5 : 0.5;
 
-    moveTo = (path) => {
+    moveTo = (endPoint) => (path) => {
         const tweens = [];
-        path.forEach(p => {
+        var baseDuration = 450;
+        path.forEach((p, i) => {
+            var duration = i == 1 ? baseDuration * 2 : baseDuration;
             tweens.push({
                 targets: this.sprite,
-                x: { value: p.x, duration: 400 },
-                y: { value: p.y, duration: 400 },
+                x: { value: p.x + (i == 1 ? 0 : (31 / 2)), duration },
+                y: { value: p.y + (i == 1 ? 0 : (31 / 2)), duration },
                 onStart: this.updateSpritePose,
                 onStartScope: this
             });
+        })
+        tweens.pop();
+        tweens.shift();
+        tweens.push({
+            targets: this.sprite,
+            x: { value: endPoint.x, duration: baseDuration },
+            y: { value: endPoint.y, duration: baseDuration },
+            onStart: this.updateSpritePose,
+            onStartScope: this
         })
         this.parent.tweens.timeline({
             tweens: tweens,
@@ -88,7 +100,7 @@ export default class Player {
 
     handleMoveComplete = () => {
         this.sprite.setTexture("sprites1", "sprites-1.png");
-        this.parent.fadeSceneRestart();
+        this.parent.time.delayedCall(800, this.parent.fadeSceneRestart, [], this);
     }
 
     stop = () => {
@@ -142,7 +154,7 @@ export default class Player {
                 this.isWalking = true;
             }
 
-        } else if (this.lastClicks.length > 1 && this.lastClicks[1].time - this.lastClicks[0].time >= 350) {
+        } else  {
             this.isWalking = false;
             this.isRunning = false;
         }

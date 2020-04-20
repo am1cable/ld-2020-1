@@ -5,14 +5,19 @@ import Light from '../components/light/light';
 import Barrel from '../components/barrel/barrel';
 import Box from '../components/box/box';
 import End from '../components/end/end';
+import Wind from '../components/wind/wind';
 
-export default class MapScene1 extends Phaser.Scene {
+export default class MapScene extends Phaser.Scene {
     constructor() {
-        super('map1')
+        super('map')
     }
 
-    init = ({restarting = false}) => {
+    init = ({ restarting = false }) => {
         this.restarting = restarting;
+        if (this.restarting) {
+            const candle = this.scene.get('candle');
+            candle.candleRemaining = 1;
+        }
     }
     preload = () => {
     }
@@ -23,7 +28,6 @@ export default class MapScene1 extends Phaser.Scene {
         const bg = this.map.createStaticLayer("bg", tileset, 0, 0);
         bg.setCollisionByProperty({ collides: true });
         this.matter.world.convertTilemapLayer(bg);
-
         let objects = this.map.getLayer("objects");
         objects = [...objects.data].reduce((list, line) => {
             const itemsInLine = line.filter(obj => obj.properties && obj.properties.name);
@@ -45,7 +49,17 @@ export default class MapScene1 extends Phaser.Scene {
         this.drawCamera();
         this.drawEnd();
         this.drawLights();
-        this.debuggingTools = new Debugger(this);
+        this.drawWind();
+        // this.debuggingTools = new Debugger(this);
+        this.input.keyboard.on('keydown', this.startPlayerMove);
+    }
+
+    startPlayerMove = (e) => {
+        var key = e.key;
+        if (key === "w" || key === "a" || key === "s" || key === "d") {
+            this.player.start();
+            this.input.keyboard.off("keydown", this.startPlayerMove);
+        }
     }
 
     drawPlayer = () => {
@@ -67,6 +81,11 @@ export default class MapScene1 extends Phaser.Scene {
         });
     }
 
+    drawWind = () => {
+        const windEmitters = this.map.getObjectLayer('wind_points').objects;
+        this.wind = new Wind({ parent: this, windEmitters });        
+    }
+
     drawCamera = () => {
         this.camera = this.cameras.main;
         this.camera.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
@@ -74,10 +93,9 @@ export default class MapScene1 extends Phaser.Scene {
         this.camera.fadeEffect.start(false, 400, 0, 0, 0);
     }
 
-
-    fadeSceneRestart = (parent) => {
+    fadeSceneRestart = () => {
         this.camera.fadeEffect.start(true, 400, 0, 0, 0);
-        this.time.delayedCall(1 * 1000, () => this.scene.restart({restarting: true}), [], this);
+        this.time.delayedCall(1 * 1000, () => this.scene.restart({ restarting: true }), [], this);
     }
 
     update = (time, delta) => {

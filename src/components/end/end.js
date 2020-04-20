@@ -27,7 +27,7 @@ export default class End {
         const player = this.parent.player;
         player.stop();
         const pathFinder = new PathFinder({parent: this.parent});
-        pathFinder.getPath({start: player.sprite, end: this.endPoint, callback: player.moveTo})
+        pathFinder.getPath({start: player.sprite, end: this.endPoint, callback: player.moveTo(this.endPoint)})
         this.collision();
     }
 

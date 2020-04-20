@@ -1,9 +1,9 @@
 import Phaser from 'phaser';
 import LoadingScene from './scenes/loading';
-import MapScene1 from './scenes/map1';
-import Candle from './scenes/candle'
+import MapScene from './scenes/map';
 import {gameRatio} from './gameVariables';
 import PhaserMatterCollisionPlugin from "phaser-matter-collision-plugin";
+import HUD from './scenes/hud';
 
 
 const config = {
@@ -17,7 +17,7 @@ const config = {
     autoCenter: Phaser.Scale.CENTER_BOTH,
     zoom: gameRatio.zoom
   },
-  scene: [LoadingScene, Candle, MapScene1],
+  scene: [LoadingScene, HUD, MapScene],
   physics: {
     default: "matter",
     matter: {
