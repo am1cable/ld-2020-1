@@ -1,6 +1,6 @@
 import { objectsInSameCoridoorX, objectsInSameCoridoorY } from "../../ray";
 
-const directions = { s: "s", e: "e", w: "w" };
+export const directions = { s: "s", e: "e", w: "w" };
 
 export default class Wind {
     constructor({ parent, windEmitters }) {
@@ -71,6 +71,12 @@ export default class Wind {
             const closestDistance = distanceToEmitters.reduce((prev, dist) => dist < prev ? dist : prev, 999999999999999);
             const closestEmitter = visibleEmitters.find((e, i) => distanceToEmitters[i] === closestDistance);
             const newWindStrength = (closestEmitter || { strength: this.defaultWindStrength }).strength;
+            const candle = this.parent.hud.candle;
+            if (closestEmitter) {
+                candle.flame.setWind({direction: closestEmitter.direction, strength: closestEmitter.strength});
+            }else{
+                candle.flame.setWind({direction: undefined, strength: 0});
+            }
             this.transitionVolume(newWindStrength);
         }
     }

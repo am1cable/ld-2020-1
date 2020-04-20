@@ -5,6 +5,7 @@ export default class Candle {
         this.parent = parent;
         this.player = player;
         this.candleRemaining = 1;
+        this.minCandleRemaining = 0.3;
         this.candle;
         this.padding = 10;
         this.candleHeight = (size.height / 10) - (this.padding * 2);
@@ -12,6 +13,10 @@ export default class Candle {
             .setOrigin(0, 0)
             .setPosition(this.padding, this.padding)
             .setStrokeStyle(2, 0x0000aa, 1);
+        this.wickOffset = 1;
+        this.wick = this.parent.add.rectangle(0, 0, 2, 2, 0x0000aa)
+            .setOrigin(0, 0)
+            .setPosition(this.candle.x + (this.candle.width / 2) - this.wickOffset, this.candle.y + this.wickOffset);
         this.flame = new Flame({ parent: this.parent, target: { target: this.candle, offsetX: this.candle.width / 2 } })
 
         this.parent.events.on("update", this.update, this);
@@ -64,13 +69,17 @@ export default class Candle {
                 this.candleRemaining -= 0.0001;
             }
         }
-        this.candleRemaining = Math.max(this.candleRemaining, 0.1);
+        this.candleRemaining = Math.max(this.candleRemaining, this.minCandleRemaining);
+        const candleBurned = this.candleHeight - (this.candleHeight * this.candleRemaining);
         this.candle.setScale(1, this.candleRemaining);
-        this.candle.setPosition(this.padding, this.padding + (this.candleHeight - (this.candleHeight * this.candleRemaining)));
+        this.candle.setPosition(this.padding, this.padding + candleBurned);
+        this.wick.setPosition(this.wick.x, this.candle.y - this.wickOffset);
+        this.wick.setSize(this.wick.width, Math.min(5, 2 + (candleBurned / 2.5 )));
+        this.flame.setStrength(this.candleRemaining);
     }
 
     update = (time, delta) => {
-        if (this.candleRemaining > 0.1 && this.player.isControllable) {
+        if (this.candleRemaining > this.minCandleRemaining && this.player.isControllable) {
             this.setCandleRemaining();
         }
     }

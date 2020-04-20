@@ -15,7 +15,6 @@ export default class MapScene extends Phaser.Scene {
     init = ({ restarting = false }) => {
         this.restarting = restarting;
         if (this.restarting) {
-            const hud = this.scene.get('hud');
             hud.candle.setCandleRemaining(1);
         }
     }
@@ -42,6 +41,7 @@ export default class MapScene extends Phaser.Scene {
             if (obj.properties.name === "brazier") this.brazier.push(obj);
         });
         this.drawPlayer();
+        this.hud = this.scene.get('hud');
         if (this.restarting) this.startScene();
     }
 
