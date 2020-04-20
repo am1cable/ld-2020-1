@@ -10,8 +10,8 @@ export default class Light {
           });
     };
     onCollision = () => {
-        const candle = this.parent.scene.get('candle');
-        candle.candleRemaining = 1;
+        const candle = this.parent.scene.get('hud').candle;
+        candle.setCandleRemaining(1);
         this.collision.sleep = true;
     }
 

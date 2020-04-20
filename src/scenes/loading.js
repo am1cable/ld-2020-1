@@ -39,6 +39,6 @@ export default class LoadingScene extends Phaser.Scene {
 
   create = () => {
      this.scene.start('map');
-     this.scene.launch('candle');
+     this.scene.launch('hud');
   }
 }

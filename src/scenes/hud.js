@@ -1,4 +1,5 @@
 import Candle from "../components/candle/candle";
+import { gameRatio } from "../gameVariables";
 
 export default class HUD extends Phaser.Scene {
     constructor() {
@@ -6,7 +7,6 @@ export default class HUD extends Phaser.Scene {
     };
 
     init = () => {
-        this.mapScene = this.scene.get('map');
         this.scene.bringToTop();
         this.camera = this.cameras.main;
         this.camera.zoom = 0.7;
@@ -15,7 +15,8 @@ export default class HUD extends Phaser.Scene {
     };
 
     create = () => {
-        this.candle = new Candle({parent: this, player: this.mapScene.player});
+        this.mapScene = this.scene.get('map');
+        this.candle = new Candle({parent: this, player: this.mapScene.player, size: gameRatio});
         this.mapScene.startScene();
     }
 

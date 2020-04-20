@@ -15,8 +15,8 @@ export default class MapScene extends Phaser.Scene {
     init = ({ restarting = false }) => {
         this.restarting = restarting;
         if (this.restarting) {
-            const candle = this.scene.get('candle');
-            candle.candleRemaining = 1;
+            const hud = this.scene.get('hud');
+            hud.candle.setCandleRemaining(1);
         }
     }
     preload = () => {
@@ -41,11 +41,11 @@ export default class MapScene extends Phaser.Scene {
             if (obj.properties.name === "box") this.boxes.push(new Box({ parent: this, rect: obj }));
             if (obj.properties.name === "brazier") this.brazier.push(obj);
         });
+        this.drawPlayer();
         if (this.restarting) this.startScene();
     }
 
     startScene = () => {
-        this.drawPlayer();
         this.drawCamera();
         this.drawEnd();
         this.drawLights();
