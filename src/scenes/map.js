@@ -15,7 +15,8 @@ export default class MapScene extends Phaser.Scene {
     init = ({ restarting = false }) => {
         this.restarting = restarting;
         if (this.restarting) {
-            hud.candle.setCandleRemaining(1);
+            this.hud.candle.setCandleRemaining(1);
+            this.hud.candle.flame.setWind();
         }
     }
     preload = () => {
