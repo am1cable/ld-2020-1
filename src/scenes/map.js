@@ -25,6 +25,7 @@ export default class MapScene extends Phaser.Scene {
     create = () => {
         this.map = this.make.tilemap({ key: "map" });
         const tileset = this.map.addTilesetImage("map_bg_v1", "sprites");
+        const tileset2 = this.map.addTilesetImage("map_bg_v2", "sprites2");
         const bg = this.map.createStaticLayer("bg", tileset, 0, 0);
         bg.setCollisionByProperty({ collides: true });
         this.matter.world.convertTilemapLayer(bg);
@@ -51,6 +52,7 @@ export default class MapScene extends Phaser.Scene {
         this.drawEnd();
         this.drawLights();
         this.drawWind();
+        this.add.image(0, 0, 'foreground').setOrigin(0, 0).setDepth(this.map.heightInPixels + 1000);
         // this.debuggingTools = new Debugger(this);
         this.input.keyboard.on('keydown', this.startPlayerMove);
     }

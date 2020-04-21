@@ -5,7 +5,7 @@ export default class Player {
         this.lastClicks = [];
         const { Body, Bodies } = Phaser.Physics.Matter.Matter;
         const { width: w, height: h } = this.sprite;
-        const mainBody = Bodies.circle(0, 0, w / 3, h / 3);
+        const mainBody = Bodies.circle(0, 0 + h * 0.15, w / 3, h / 3);
         this.triggerBodyOriginalPos = { x: 0, y: 0 - h * 0.25, w: w, h: h * 0.5 };
         var dist = 0.5;
         var length = 0.5;
@@ -56,7 +56,7 @@ export default class Player {
 
     runVelocity = () => this.lastClicks.length > 1 && (this.lastClicks[1].time - this.lastClicks[0].time < 350) || this.isRunning ? 1.5 : 0.5;
 
-    moveTo = (endPoint) => (path) => {
+    moveTo = (endPoint, callback) => (path) => {
         const tweens = [];
         var baseDuration = 450;
         path.forEach((p, i) => {
@@ -80,7 +80,7 @@ export default class Player {
         })
         this.parent.tweens.timeline({
             tweens: tweens,
-            onComplete: this.handleMoveComplete,
+            onComplete: this.callback,
             onCompleteScope: this
         });
     }
@@ -96,11 +96,6 @@ export default class Player {
             if (target.y > this.sprite.y) this.sprite.setTexture("sprites1", "sprites-0.png");
             else if (target.y < this.sprite.y) this.sprite.setTexture("sprites1", "sprites-1.png");
         }
-    }
-
-    handleMoveComplete = () => {
-        this.sprite.setTexture("sprites1", "sprites-1.png");
-        this.parent.time.delayedCall(800, this.parent.fadeSceneRestart, [], this);
     }
 
     stop = () => {
@@ -158,6 +153,6 @@ export default class Player {
             this.isWalking = false;
             this.isRunning = false;
         }
-        this.sprite.setDepth(this.sprite.y + this.sprite.height - 2);
+        this.sprite.setDepth(this.sprite.y + (this.sprite.height / 1.5));
     }
 };

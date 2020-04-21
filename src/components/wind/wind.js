@@ -55,7 +55,7 @@ export default class Wind {
         this.wind.setVolume(this.windStrength);
     }
 
-    update = () => {
+    update = () => {        
         if (this.parent.player.isWalking || this.parent.player.isRunning) {
             const player = this.parent.player.sprite;
             const visibleEmitters = this.windEmitters.filter(wi => {
@@ -69,15 +69,18 @@ export default class Wind {
                 return distance;
             });
             const closestDistance = distanceToEmitters.reduce((prev, dist) => dist < prev ? dist : prev, 999999999999999);
-            const closestEmitter = visibleEmitters.find((e, i) => distanceToEmitters[i] === closestDistance);
-            const newWindStrength = (closestEmitter || { strength: this.defaultWindStrength }).strength;
+            this.closestEmitter = visibleEmitters.find((e, i) => distanceToEmitters[i] === closestDistance);
             const candle = this.parent.hud.candle;
-            if (closestEmitter) {
-                candle.flame.setWind({direction: closestEmitter.direction, strength: closestEmitter.strength});
+            if (this.closestEmitter) {
+                candle.flame.setWind({direction: this.closestEmitter.direction, strength: this.closestEmitter.strength});
             }else{
                 candle.flame.setWind({direction: undefined, strength: 0});
             }
-            this.transitionVolume(newWindStrength);
+            const newWindStrength = (this.closestEmitter || { strength: this.defaultWindStrength }).strength;
+            newWindStrength != this.windStrength && this.transitionVolume(newWindStrength);
+        }else if (!!this.closestEmitter){            
+            const newWindStrength = this.closestEmitter.strength;
+            newWindStrength != this.windStrength && this.transitionVolume(newWindStrength);
         }
     }
 }
@@ -88,35 +91,70 @@ export class WindEmitter {
         this.originPoint = emitterPoint;
         this.direction = emitterPoint.properties[0].value;
         this.strength = 1;
+        this.strengthTimerConfig = {
+            delay: 5000 * Math.random(),
+            callback: this.getNewStrength,
+            callbackScope: this,
+             loop: true
+        };
+        this.newStrengthTimer = this.parent.time.addEvent(this.strengthTimerConfig);
 
         const particles = this.parent.add.particles('particle');
         const config = {
             x: emitterPoint.x,
             y: { min: emitterPoint.y - 32, max: emitterPoint.y + 32 },
-            lifespan: 4000,
-            scale: { start: 1, end: 0 },
-            quantity: 4
+            lifespan: 10 * 1000,
+            quantity: 4,
+            alpha: {min: 0.2, max: 1}
         };
         const emitterOffset = 4;
-        const speed = { min: 50, max: 200 };
+        this.speed = { min: 300, max: 400 };
         if (this.direction === directions.s) {
             config.x = { min: emitterPoint.x - 32, max: emitterPoint.x + 32 }
             config.y = emitterPoint.y + emitterOffset;
-            config.speedY = speed;
+            config.speedY = this.speed;
         }
         if (this.direction === directions.e) {
-            config.speedX = speed;
+            config.speedX = this.speed;
             config.x = emitterPoint.x + emitterOffset;
         }
         if (this.direction === directions.w) {
-            config.speedX = { min: -speed.min, max: -speed.max };
+            config.speedX = { min: -this.speed.min, max: -this.speed.max };
             config.x = emitterPoint.x - emitterOffset;
         }
         this.emitter = particles.createEmitter({ ...config });
         this.emitter.manager.setDepth(this.parent.map.heightInPixels + 1);
+
+        this.parent.events.on("update", this.update, this);
+        this.parent.events.once("shutdown", this.destroy, this);
+        this.parent.events.once("destroy", this.destroy, this);
     };
 
-    update = (time, delta) => {
+    getNewStrength = () => {
+        this.strength = Math.max(0.25, Math.random().toFixed(2));
+        this.newStrengthTimer.delay = (5000 * Math.random()).toFixed(2);
+        this.updateSpeed();
+    }
 
+    updateSpeed = () => {
+        const speed = { min: this.speed.min * this.strength, max: this.speed.max * this.strength};
+        if (this.direction === directions.s) {
+            this.emitter.setSpeedY(speed);
+        }
+        if (this.direction === directions.e) {
+            this.emitter.setSpeedX(speed);
+        }
+        if (this.direction === directions.w) {
+            this.emitter.setSpeedX({ min: -speed.min, max: -speed.max });
+        }
+    }
+
+    destroy = () => {
+        this.parent.events.off("update", this.update, this);
+        this.parent.events.off("shutdown", this.destroy, this);
+        this.parent.events.off("destroy", this.destroy, this);
+    }
+
+    update = (time, delta) => {
     }
 };

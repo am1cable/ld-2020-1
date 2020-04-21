@@ -5,6 +5,7 @@ export default class Light {
         this.parent = parent;
         this.light = this.parent.matter.add.rectangle(rect.x + (rect.width / 2), rect.y + (rect.height / 2), rect.width, rect.height, { isSensor: true, isStatic: true });
         this.flame = new Flame({ parent, pos: { x: rect.x + (rect.width / 2), y: rect.y + (rect.height / 2) } });
+        this.flame.setDepth(this.flame.y);
         this.collision = this.parent.matterCollision.addOnCollideStart({
             objectA: this.light,
             objectB: this.parent.player.sprite,

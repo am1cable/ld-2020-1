@@ -3,12 +3,12 @@ import { directions } from "../wind/wind";
 export default class Flame {
     constructor({ parent, target, strength = 1, pos = { x: 0, y: 0 } }) {
         this.parent = parent;
-        var particles = this.parent.add.particles('flares');
+        this.particles = this.parent.add.particles('flares');
         this.startPos = pos;
         this.lifespan = 20 * strength;
         this.speed = 100 * strength;
         this.wick = target;
-        this.flame = particles.createEmitter({
+        this.flame = this.particles.createEmitter({
             frame: 'yellow',
             radial: false,
             x: pos.x,
@@ -25,7 +25,7 @@ export default class Flame {
         }
     }
 
-    setWind = ({direction = undefined, strength = 0}) => {
+    setWind = ({ direction = undefined, strength = 0 }) => {
         this.flame.setSpeedX(0);
         switch (direction) {
             case directions.s:
@@ -38,9 +38,11 @@ export default class Flame {
                 this.flame.setSpeedX(strength * this.speed);
                 break;
             default:
-                this.setStrength(this.strength);                
+                this.setStrength(this.strength);
         }
     }
+
+    setDepth = (depth) => this.particles.setDepth(depth);
 
     setStrength = (strength) => {
         this.strength = strength;
@@ -48,7 +50,7 @@ export default class Flame {
         const lifespan = this.lifespan * strength;
         this.flame.setSpeedY({ min: -speed, max: -speed * 2 });
         this.flame.setLifespan({ min: lifespan, max: lifespan * 2 });
-        this.flame.setAlpha({start: strength, end: 0});
+        this.flame.setAlpha({ start: strength, end: 0 });
     }
 
     setPosition = (pos = this.startPos) => this.flame.setPosition(pos.x, pos.y);

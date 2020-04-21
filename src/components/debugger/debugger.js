@@ -3,12 +3,11 @@ export default class Debugger {
   constructor(parent) {
     this.parent = parent;
 
-    this.parent.cameras.add(0, 0, 100, 100)
-      .setName("mini")
-      .setBounds(0, 0, this.parent.map.widthInPixels, this.parent.map.heightInPixels)
-      .setPosition(0,0)
-      // .setScroll(2050, 2050)
-      .setZoom(0.1);
+    // this.parent.cameras.add(0, 0, 100, 100)
+    //   .setName("mini")
+    //   .setBounds(0, 0, this.parent.map.widthInPixels, this.parent.map.heightInPixels)
+    //   .setPosition(0,0)
+    //   .setZoom(0.1);
 
     // const debugGraphics = this.parent.add.graphics().setAlpha(0.25);
     // parent.tileMap.renderDebug(debugGraphics, {

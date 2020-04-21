@@ -27,8 +27,13 @@ export default class End {
         const player = this.parent.player;
         player.stop();
         const pathFinder = new PathFinder({parent: this.parent});
-        pathFinder.getPath({start: player.sprite, end: this.endPoint, callback: player.moveTo(this.endPoint)})
+        pathFinder.getPath({start: player.sprite, end: this.endPoint, callback: player.moveTo(this.endPoint, this.endGame)})
         this.collision();
+    }
+
+    endGame = () => {
+        this.parent.player.sprite.setTexture("sprites1", "sprites-1.png");
+        this.parent.time.delayedCall(800, this.parent.fadeSceneRestart, [], this);
     }
 
     update = (time, delta) => {
