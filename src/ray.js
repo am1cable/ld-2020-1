@@ -1,9 +1,10 @@
-export const inLOSOnMap = ({ parent, start, end }) => {
+export const inDirectLineOfSight = ({ parent, blockableBodies, start, end }) => {
     const query = Phaser.Physics.Matter.Matter.Query;
     const mapBodies = getMapBodies(parent.map);
-    const objectsInWay = query.ray(mapBodies, { x: start.x, y: start.y }, { x: end.x, y: end.y });
+    const objectsInWay = query.ray([...mapBodies, ...blockableBodies], { x: start.x, y: start.y }, { x: end.x, y: end.y });
     return objectsInWay.length === 0;
 }
+
 
 export const objectsInSameCoridoorX = ({ parent, bodies = [], start }) => {
     const query = Phaser.Physics.Matter.Matter.Query;

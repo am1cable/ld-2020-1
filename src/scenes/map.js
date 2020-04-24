@@ -6,6 +6,8 @@ import Barrel from '../components/barrel/barrel';
 import Box from '../components/box/box';
 import End from '../components/end/end';
 import Wind from '../components/wind/wind';
+import { gameRatio } from '../gameVariables';
+import { CandleManager } from '../components/candle/candle';
 
 export default class MapScene extends Phaser.Scene {
     constructor() {
@@ -15,14 +17,17 @@ export default class MapScene extends Phaser.Scene {
     init = ({ restarting = false }) => {
         this.restarting = restarting;
         if (this.restarting) {
-            this.hud.candle.setCandleRemaining(1);
-            this.hud.candle.flame.setWind();
+            
+            this.candleManager.setCandleRemaining(1);
+            this.candleManager.setWind();
         }
     }
     preload = () => {
     }
 
     create = () => {
+        // debugger;
+        this.candleManager = new CandleManager({parent: this});
         this.map = this.make.tilemap({ key: "map" });
         const tileset = this.map.addTilesetImage("map_bg_v1", "sprites");
         const tileset2 = this.map.addTilesetImage("map_bg_v2", "sprites2");
@@ -42,12 +47,26 @@ export default class MapScene extends Phaser.Scene {
             if (obj.properties.name === "box") this.boxes.push(new Box({ parent: this, rect: obj }));
             if (obj.properties.name === "brazier") this.brazier.push(obj);
         });
+        this.lamps = [];
+        // this.createNewImageFromTileLayer({ name: "candles", newArray: this.lamps, tileSet: tileset2, imageKey: "sprites2" })
         this.drawPlayer();
-        this.hud = this.scene.get('hud');
+        this.hud = this.scene.get('hud');       
         if (this.restarting) this.startScene();
     }
 
+    createNewImageFromTileLayer = ({name, newArray, tileSet, imageKey }) => {
+        this.map.createStaticLayer(name, tileSet, 0, 0);
+        const arrayOfIndexes = [];
+        this.map.forEachTile(t => arrayOfIndexes.push(t.index), this, undefined, undefined, undefined, undefined, {isNotEmpty: true}, name);
+        newArray = this.map.createFromTiles(arrayOfIndexes, -1, {key: imageKey}, undefined, name);
+        newArray.forEach(sprite => {
+            debugger;
+        })
+    }
+
     startScene = () => {
+        this.candleManager.addCandle(this.hud.candle);
+        this.candleManager.addCandle(this.player.candle);         
         this.drawCamera();
         this.drawEnd();
         this.drawLights();
@@ -86,13 +105,14 @@ export default class MapScene extends Phaser.Scene {
 
     drawWind = () => {
         const windEmitters = this.map.getObjectLayer('wind_points').objects;
-        this.wind = new Wind({ parent: this, windEmitters });        
+        this.wind = new Wind({ parent: this, windEmitters });
     }
 
     drawCamera = () => {
         this.camera = this.cameras.main;
         this.camera.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.camera.startFollow(this.player.sprite);
+        this.camera.zoom = gameRatio.zoom;
         this.camera.fadeEffect.start(false, 400, 0, 0, 0);
     }
 

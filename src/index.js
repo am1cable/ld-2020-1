@@ -9,13 +9,12 @@ import HUD from './scenes/hud';
 const config = {
   type: Phaser.AUTO,
   pixelArt: true,
-  width: gameRatio.width / (gameRatio.zoom / 2),
-  height: gameRatio.height / (gameRatio.zoom / 2),
+  width: gameRatio.width,
+  height: gameRatio.height,
   scale: {
     parent: undefined,
-    mode: Phaser.Scale.NONE,
+    mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
-    zoom: gameRatio.zoom
   },
   scene: [LoadingScene, HUD, MapScene],
   physics: {

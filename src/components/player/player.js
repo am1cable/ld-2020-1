@@ -1,3 +1,5 @@
+import Candle from "../candle/candle";
+
 export default class Player {
     constructor({ parent, x, y }) {
         this.parent = parent;
@@ -28,6 +30,12 @@ export default class Player {
             .setPosition(x, y)
             .setDepth(this.sprite.y + this.sprite.height - 2);
 
+        this.candleOffset = 13;
+        // this.candle = new Candle({ parent: this.parent, player: this, size: { width: 5, height: 10 }, border: 1, padding: 0 , scaleCandle : false, origin: [0.5, 1]});
+        // this.candle.setPosition({x, y: y - this.candleOffset});
+        // this.candle.setDepth(this.candle.y + this.candle.height - 2);
+
+
         const { A, D, W, S } = Phaser.Input.Keyboard.KeyCodes;
         this.leftInput = this.parent.input.keyboard.addKey(A);
         this.leftInput.on("down", e => this.lastClicks.push({ type: "left", time: e.originalEvent.timeStamp }));
@@ -41,7 +49,7 @@ export default class Player {
         this.parent.events.on("update", this.update, this);
         this.parent.events.once("shutdown", this.destroy, this);
         this.parent.events.once("destroy", this.destroy, this);
-        
+
         this.isRunning = false;
         this.isWalking = false;
         this.isControllable = false;
@@ -123,21 +131,25 @@ export default class Player {
             if (isRightKeyDown) {
                 sprite.setVelocityX(velocity);
                 sprite.setTexture("sprites1", "sprites-3.png");
+                // this.candle.setPosition({x: this.sprite.x + this.candleOffset, y: this.sprite.y});
                 this.triggers.right.sleeping = false;
             };
             if (isLeftKeyDown) {
                 sprite.setVelocityX(-velocity);
                 sprite.setTexture("sprites1", "sprites-2.png");
+                // this.candle.setPosition({x: this.sprite.x - this.candleOffset, y: this.sprite.y});
                 this.triggers.left.sleeping = false;
             };
             if (isUpKeyDown) {
                 sprite.setVelocityY(-velocity);
                 sprite.setTexture("sprites1", "sprites-1.png");
+                // this.candle.setPosition({x: this.sprite.x, y: this.sprite.y - this.candleOffset});
                 this.triggers.up.sleeping = false;
             }
             if (isDownKeyDown) {
                 sprite.setVelocityY(velocity);
                 sprite.setTexture("sprites1", "sprites-0.png");
+                // this.candle.setPosition({x: this.sprite.x, y: this.sprite.y + this.candleOffset});
                 this.triggers.down.sleeping = false;
             }
             if (velocity > 1) {
@@ -149,10 +161,11 @@ export default class Player {
                 this.isWalking = true;
             }
 
-        } else  {
+        } else {
             this.isWalking = false;
             this.isRunning = false;
         }
         this.sprite.setDepth(this.sprite.y + (this.sprite.height / 1.5));
+        // this.candle.setDepth(this.candle.y + this.candle.height - 2);
     }
 };

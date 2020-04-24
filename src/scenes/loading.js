@@ -36,7 +36,7 @@ export default class LoadingScene extends Phaser.Scene {
     this.load.image('particle', 'assets/particle.png');
     this.load.audio('wind_3', 'assets/wind_3.m4a');
     this.load.atlas('flares', 'assets/flares.png', 'assets/flares.json');
-    this.load.image('foreground', 'assets/map1-2.png');
+    this.load.image('foreground', 'assets/map1-3.png');
   }
 
   create = () => {
