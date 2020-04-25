@@ -95,7 +95,7 @@ export default class Candle {
     update = (time, delta) => {
         if (this.candleRemaining > this.minCandleRemaining && this.player.isControllable) {
             this.setCandleRemaining();
-        }else if(this.candleRemaining = this.minCandleRemaining){
+        }else if(this.candleRemaining === this.minCandleRemaining){
             this.candleEmpty();
         }
         const candleBurned = this.candleHeight - (this.candleHeight * this.candleRemaining);

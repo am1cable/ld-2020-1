@@ -1,4 +1,4 @@
-import { objectsInSameCoridoorX, objectsInSameCoridoorY, inDirectLineOfSight } from "../../ray";
+import { objectsInSameCoridoorX, objectsInSameCoridoorY, inDirectLineOfSight } from "../../matterQuery";
 
 export const directions = { s: "s", e: "e", w: "w" };
 const minWindSpeed = 0.3;
@@ -86,7 +86,7 @@ export default class Wind {
     getClosestExposedEmitter = () => {
         const visibleEmitters = this.getVisibleEmitters();
         return visibleEmitters.find(vi => {
-            return inDirectLineOfSight({ parent: this.parent, blockableBodies: this.parent.boxes.map(b => b.box.body), start: this.getXYofEmitter(vi.emitter), end: this.player })
+            return inDirectLineOfSight({ parent: this.parent, blockableBodies: [...this.parent.boxes.map(b => b.box.body), ...this.parent.barrels.map(b => b.barrel.body)], start: this.getXYofEmitter(vi.emitter), end: this.player })
         });
     }
 
@@ -114,7 +114,7 @@ export class WindEmitter {
             callbackScope: this,
             loop: true
         };
-        // this.newStrengthTimer = this.parent.time.addEvent(this.strengthTimerConfig);
+        this.newStrengthTimer = this.parent.time.addEvent(this.strengthTimerConfig);
         const matterContains = Phaser.Physics.Matter.Matter.Bounds.contains;
         const boxes = this.parent.boxes;
         const walls = this.parent.map.filterTiles(t => t.properties.isUnpassable, this, undefined, undefined, undefined, undefined, undefined, "bg");
