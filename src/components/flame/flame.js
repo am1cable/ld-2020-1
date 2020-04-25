@@ -8,6 +8,7 @@ export default class Flame {
         this.lifespan = 20 * strength;
         this.speed = 100 * strength;
         this.wick = target;
+        this.flameScaleMultiplier = 1;
         this.flame = this.particles.createEmitter({
             frame: 'yellow',
             radial: false,
@@ -25,7 +26,33 @@ export default class Flame {
         }
     }
 
-    setWind = ({ direction = undefined, strength = 0 }) => {
+    setScale = (size) => {
+        this.flameScaleMultiplier = size;
+        this.flame.setScale({ start: 0.09 * size, end: 0.01 * size });
+    }
+
+    growToScale = (target, callBack) => {
+        const start = this.flameScaleMultiplier;
+        if (target !== start) {
+            if (!!this.scaleTransition) {
+                if (this.scaleTransition.data[0].getEndValue() === target && this.scaleTransition.isPlaying()) return;
+                this.scaleTransition.stop();
+                this.scaleTransition.remove();
+            }
+            const duration = Math.abs(start - target) * 500;
+            this.scaleTransition = this.parent.tweens.addCounter({
+                from: start,
+                to: target,
+                duration,
+                onUpdate: (tween) => this.setScale(tween.getValue()),
+                onUpdateScope: this,
+                onComplete: callBack,
+                onCompleteScope: this
+            });
+        }
+    }
+
+    setWind = ({ direction, strength }) => {
         this.flame.setSpeedX(0);
         switch (direction) {
             case directions.s:

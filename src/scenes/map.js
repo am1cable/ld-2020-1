@@ -66,7 +66,7 @@ export default class MapScene extends Phaser.Scene {
 
     startScene = () => {
         this.candleManager.addCandle(this.hud.candle);
-        this.candleManager.addCandle(this.player.candle);         
+        // this.candleManager.addCandle(this.player.candle);         
         this.drawCamera();
         this.drawEnd();
         this.drawLights();

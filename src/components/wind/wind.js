@@ -114,7 +114,7 @@ export class WindEmitter {
             callbackScope: this,
             loop: true
         };
-        this.newStrengthTimer = this.parent.time.addEvent(this.strengthTimerConfig);
+        // this.newStrengthTimer = this.parent.time.addEvent(this.strengthTimerConfig);
         const matterContains = Phaser.Physics.Matter.Matter.Bounds.contains;
         const boxes = this.parent.boxes;
         const walls = this.parent.map.filterTiles(t => t.properties.isUnpassable, this, undefined, undefined, undefined, undefined, undefined, "bg");

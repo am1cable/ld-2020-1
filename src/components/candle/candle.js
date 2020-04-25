@@ -7,17 +7,18 @@ export class CandleManager {
     addCandle = (candle) => this.candles.push(candle);
     exposeToWind = (strength) => this.candles.forEach(candle => candle.exposeToWind(strength));
     setCandleRemaining = (amt) => this.candles.forEach(candle => candle.setCandleRemaining(amt));
-    setWind = (amt) => this.candles.forEach(candle => candle.flame.setWind(amt));
+    setWind = (amt = {direction: undefined, strength: 0}) => this.candles.forEach(candle => candle.flame.setWind(amt));
 }
 
 export default class Candle {
-    constructor({ parent, player, size, showWick = true, border, padding, wickOffset, scaleCandle = true, origin = [0, 0] }) {
+    constructor({ parent, player, size, showWick = true, border, padding, wickOffset, onCandleEmpty = () => {}, scaleCandle = true, origin = [0, 0] }) {
         this.parent = parent;
         this.player = player;
         this.candleRemaining = 1;
         this.minCandleRemaining = 0.3;
         this.windStrength = 0;
         this.candle;
+        this.candleEmpty = onCandleEmpty;
         this.padding = padding || 10;
         this.candlePosition = { x: this.padding, y: this.padding };
         this.candleWidth = scaleCandle ? size.width / 20 : size.width;
@@ -94,6 +95,8 @@ export default class Candle {
     update = (time, delta) => {
         if (this.candleRemaining > this.minCandleRemaining && this.player.isControllable) {
             this.setCandleRemaining();
+        }else if(this.candleRemaining = this.minCandleRemaining){
+            this.candleEmpty();
         }
         const candleBurned = this.candleHeight - (this.candleHeight * this.candleRemaining);
         this.candle.setScale(1, this.candleRemaining);

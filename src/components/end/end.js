@@ -1,4 +1,5 @@
 import PathFinder from "../pathFinder/pathFinder";
+import Flame from "../flame/flame";
 
 export default class End {
     constructor({ parent, triggerPoint, endPoint, sprites }) {
@@ -33,7 +34,10 @@ export default class End {
 
     endGame = () => {
         this.parent.player.sprite.setTexture("sprites1", "sprites-1.png");
-        this.parent.time.delayedCall(800, this.parent.fadeSceneRestart, [], this);
+        const bigFirePoint = this.parent.map.getObjectLayer('big_fires').objects[0];
+        const bigFire = new Flame({parent: this.parent, pos: bigFirePoint});
+        bigFire.setDepth(this.parent.player.sprite.y + this.parent.player.sprite.height);
+        bigFire.growToScale(8, () => this.parent.time.delayedCall(800, this.parent.fadeSceneRestart, [], this));
     }
 
     update = (time, delta) => {

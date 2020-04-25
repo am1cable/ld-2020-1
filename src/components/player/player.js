@@ -35,7 +35,6 @@ export default class Player {
         // this.candle.setPosition({x, y: y - this.candleOffset});
         // this.candle.setDepth(this.candle.y + this.candle.height - 2);
 
-
         const { A, D, W, S } = Phaser.Input.Keyboard.KeyCodes;
         this.leftInput = this.parent.input.keyboard.addKey(A);
         this.leftInput.on("down", e => this.lastClicks.push({ type: "left", time: e.originalEvent.timeStamp }));
@@ -88,7 +87,7 @@ export default class Player {
         })
         this.parent.tweens.timeline({
             tweens: tweens,
-            onComplete: this.callback,
+            onComplete: callback,
             onCompleteScope: this
         });
     }
