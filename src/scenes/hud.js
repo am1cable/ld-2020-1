@@ -23,6 +23,11 @@ export default class HUD extends Phaser.Scene {
         this.instructions = this.make.text(createText({ x: this.candle.candle.width + (this.candle.padding * 2), y: this.candle.padding }, instructions));
     }
 
+    refresh = () => {
+        this.mapScene = this.scene.get('map');
+        this.candle.setPlayer(this.mapScene.player);
+    }
+
     update = (time, delta) => {        
     }
 };

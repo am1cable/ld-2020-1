@@ -92,6 +92,8 @@ export default class Candle {
         this.candleRemaining = Math.max(this.candleRemaining, this.minCandleRemaining);
     }
 
+    setPlayer = (player) => this.player = player;
+
     update = (time, delta) => {
         if (this.candleRemaining > this.minCandleRemaining && this.player.isControllable) {
             this.setCandleRemaining();

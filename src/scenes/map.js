@@ -17,7 +17,7 @@ export default class MapScene extends Phaser.Scene {
     init = ({ restarting = false }) => {
         this.restarting = restarting;
         if (this.restarting) {
-            
+
             this.candleManager.setCandleRemaining(1);
             this.candleManager.setWind();
         }
@@ -27,7 +27,7 @@ export default class MapScene extends Phaser.Scene {
 
     create = () => {
         // debugger;
-        this.candleManager = new CandleManager({parent: this});
+        this.candleManager = new CandleManager({ parent: this });
         this.map = this.make.tilemap({ key: "map" });
         const tileset = this.map.addTilesetImage("map_bg_v1", "sprites");
         const tileset2 = this.map.addTilesetImage("map_bg_v2", "sprites2");
@@ -50,15 +50,18 @@ export default class MapScene extends Phaser.Scene {
         this.lamps = [];
         // this.createNewImageFromTileLayer({ name: "candles", newArray: this.lamps, tileSet: tileset2, imageKey: "sprites2" })
         this.drawPlayer();
-        this.hud = this.scene.get('hud');       
-        if (this.restarting) this.startScene();
+        this.hud = this.scene.get('hud');
+        if (this.restarting) {
+            this.hud.refresh();
+            this.startScene();
+        }
     }
 
-    createNewImageFromTileLayer = ({name, newArray, tileSet, imageKey }) => {
+    createNewImageFromTileLayer = ({ name, newArray, tileSet, imageKey }) => {
         this.map.createStaticLayer(name, tileSet, 0, 0);
         const arrayOfIndexes = [];
-        this.map.forEachTile(t => arrayOfIndexes.push(t.index), this, undefined, undefined, undefined, undefined, {isNotEmpty: true}, name);
-        newArray = this.map.createFromTiles(arrayOfIndexes, -1, {key: imageKey}, undefined, name);
+        this.map.forEachTile(t => arrayOfIndexes.push(t.index), this, undefined, undefined, undefined, undefined, { isNotEmpty: true }, name);
+        newArray = this.map.createFromTiles(arrayOfIndexes, -1, { key: imageKey }, undefined, name);
         newArray.forEach(sprite => {
             debugger;
         })
