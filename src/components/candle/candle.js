@@ -69,7 +69,7 @@ export default class Candle {
     }
 
     setCandleRemainingDecrease = (amt) => {
-        var amtTotal = this.windStrength !== 0 ? (amt / this.windStrength).toFixed(5) : amt;
+        var amtTotal = this.windStrength !== 0 ? (amt * (this.windStrength * 5)).toFixed(5) : amt;
         this.candleRemaining -= amtTotal;
     }
 

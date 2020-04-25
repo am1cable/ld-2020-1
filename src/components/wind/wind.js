@@ -47,13 +47,13 @@ export default class Wind {
                 from: start,
                 to: target,
                 duration,
-                onUpdate: this.updateCandleWind,
+                onUpdate: (tween) => this.updateCandleWind(tween.getValue()),
                 onUpdateScope: this
             });
         }
     }
-    updateCandleWind = (tween) => {
-        this.windStrength = tween.getValue();
+    updateCandleWind = (value) => {
+        this.windStrength = value;
         this.wind.setVolume(this.windStrength);
         if (this.closestEmitter && this.windStrength !== this.defaultWindStrength) {
             this.candle.setWind({ direction: this.closestEmitter.direction, strength: this.windStrength });

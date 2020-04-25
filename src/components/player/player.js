@@ -8,7 +8,7 @@ export default class Player {
         this.sprite = this.parent.matter.add.sprite(0, 0, "sprites1", "sprites-1.png");
         this.lastClicks = [];
         const { width: w, height: h } = this.sprite;
-        const mainBody = Matter.Bodies.circle(0, 0 + h * 0.15, w / 3, h / 3);
+        const mainBody = Matter.Bodies.circle(0, 0 + h * 0.15, w / 3);
         this.triggerBodyOriginalPos = { x: 0, y: 0 - h * 0.25, w: w, h: h * 0.5 };
         var dist = 0.5;
         var length = 0.5;
@@ -82,11 +82,11 @@ export default class Player {
         this.parent.events.off("destroy", this.destroy, this);
     }
 
-    runVelocity = () => this.lastClicks.length > 1 && (this.lastClicks[1].time - this.lastClicks[0].time < 350) || this.isRunning ? 1.5 : 0.5;
+    runVelocity = () => this.lastClicks.length > 1 && (this.lastClicks[1].time - this.lastClicks[0].time < 350) || this.isRunning ? 2.5 : 1;
 
     moveTo = (endPoint, callback) => (path) => {
         const tweens = [];
-        var baseDuration = 450;
+        var baseDuration = path.length * 31 * 4;
         path.forEach((p, i) => {
             var duration = i == 1 ? baseDuration * 2 : baseDuration;
             tweens.push({
